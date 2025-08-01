@@ -15,6 +15,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.cirrusmobileapp.presentation.navigation.bottom_navigation.BottomNavigationBar
 import com.example.cirrusmobileapp.presentation.navigation.Destinations
+import com.example.cirrusmobileapp.presentation.navigation.top_bar.AppTopBar
 import com.example.cirrusmobileapp.presentation.screens.calendar.CalendarScreen
 import com.example.cirrusmobileapp.presentation.screens.catalog.CatalogScreen
 import com.example.cirrusmobileapp.presentation.screens.customer.CustomerScreen
@@ -51,6 +53,9 @@ fun MainScreen() {
     val currentDestination = currentBackStackEntry?.destination
 
     Scaffold(
+        topBar = {
+            AppTopBar()
+        },
         bottomBar = {
             BottomNavigationBar(
                 navController = navController,
