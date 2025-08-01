@@ -4,13 +4,29 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.cirrusmobileapp.presentation.navigation.bottom_navigation.BottomNavigationBar
+import com.example.cirrusmobileapp.presentation.navigation.Destinations
+import com.example.cirrusmobileapp.presentation.screens.catalog.CatalogScreen
 import com.example.cirrusmobileapp.ui.theme.CirrusMobileAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +35,64 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CirrusMobileAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                MainScreen()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun MainScreen() {
+    val navController = rememberNavController()
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = currentBackStackEntry?.destination
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CirrusMobileAppTheme {
-        Greeting("Android")
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(
+                navController = navController,
+                currentDestination = currentDestination
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                modifier = Modifier
+                    .size(70.dp)
+                    .offset(y = (48).dp),
+                containerColor = Color.Black,
+                shape = RoundedCornerShape(50),
+                onClick = {
+                    navController.navigate(Destinations.Catalog.route)
+                }
+            ) {
+                Icon(
+                    modifier = Modifier.size(35.dp),
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add")
+            }
+        },
+        floatingActionButtonPosition = FabPosition.Center
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = Destinations.HomeScreen.route,
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable(Destinations.HomeScreen.route) {
+
+                Text(text = "Home Screen")
+            }
+            composable(Destinations.Customers.route) {
+
+                Text(text = "Customers Screen")
+            }
+            composable(Destinations.Catalog.route) {
+                CatalogScreen(navController)
+            }
+            composable(Destinations.Calendar.route) {
+
+                Text(text = "Calendar Screen")
+            }
+        }
     }
 }
