@@ -26,7 +26,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.cirrusmobileapp.presentation.navigation.bottom_navigation.BottomNavigationBar
 import com.example.cirrusmobileapp.presentation.navigation.Destinations
+import com.example.cirrusmobileapp.presentation.screens.calendar.CalendarScreen
 import com.example.cirrusmobileapp.presentation.screens.catalog.CatalogScreen
+import com.example.cirrusmobileapp.presentation.screens.customer.CustomerScreen
+import com.example.cirrusmobileapp.presentation.screens.home.HomeScreen
 import com.example.cirrusmobileapp.ui.theme.CirrusMobileAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -79,19 +82,16 @@ fun MainScreen() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Destinations.HomeScreen.route) {
-
-                Text(text = "Home Screen")
+                HomeScreen(navController)
             }
             composable(Destinations.Customers.route) {
-
-                Text(text = "Customers Screen")
+                CustomerScreen(navController)
             }
             composable(Destinations.Catalog.route) {
                 CatalogScreen(navController)
             }
             composable(Destinations.Calendar.route) {
-
-                Text(text = "Calendar Screen")
+                CalendarScreen(navController)
             }
         }
     }
