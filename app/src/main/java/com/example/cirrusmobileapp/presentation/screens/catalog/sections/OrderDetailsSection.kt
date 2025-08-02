@@ -27,7 +27,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun OrderDetailsSection(
-    modifier: Modifier
+    modifier: Modifier,
+    onOrderClick : () -> Unit
 ) {
 
     Box (
@@ -91,7 +92,10 @@ fun OrderDetailsSection(
             ){
                 Row(
                     modifier = Modifier
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = 16.dp)
+                        .clickable {
+                            onOrderClick()
+                        },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(

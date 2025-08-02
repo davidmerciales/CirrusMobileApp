@@ -14,13 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.cirrusmobileapp.presentation.AppViewModel
 import com.example.cirrusmobileapp.presentation.screens.catalog.sections.CustomerDetailsSection
 import com.example.cirrusmobileapp.presentation.screens.catalog.sections.OrderDetailsSection
 import com.example.cirrusmobileapp.presentation.screens.catalog.sections.ProductListSection
 
 @Composable
 fun CatalogScreen(
-    navController: NavController
+    navController: NavController,
+    appViewModel: AppViewModel
 ) {
 
     val products = listOf(
@@ -91,7 +93,10 @@ fun CatalogScreen(
                     .weight(.29f)
                     .fillMaxHeight()
                     .padding(top = 28.dp, start = 18.dp, end = 22.dp, bottom = 10.dp)
-                    .border(1.dp, Color.LightGray.copy(alpha = .3f), RoundedCornerShape(8.dp))
+                    .border(1.dp, Color.LightGray.copy(alpha = .3f), RoundedCornerShape(8.dp)),
+                onOrderClick = {
+                    appViewModel.showNotification("Order","Order placed successfully!")
+                }
             )
         }
     }
