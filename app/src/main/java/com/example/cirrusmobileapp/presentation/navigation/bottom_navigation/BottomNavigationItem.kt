@@ -48,7 +48,6 @@ fun BottomNavigationItem(
                             saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = true
                     }
                 }
             ),
