@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.example.cirrusmobileapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.cirrusmobileapp"
@@ -75,5 +75,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.okhttp)
     ksp(libs.hilt.android.compiler)
 }

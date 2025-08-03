@@ -2,14 +2,14 @@
 # Set all your core versions to match.
 agp = "8.5.2"
 kotlin = "2.0.0"
-composeCompiler = "1.6.0" # New entry for Compose Compiler
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.9.3"
-composeBom = "2024.04.01" # This might be too old for Kotlin 2.0.0, consider updating
+lifecycleRuntimeKtx = "2.6.2"
+activityCompose = "1.10.1"
+composeBom = "2024.04.01"
+okhttp = "4.12.0"
 hilt = "2.48.1"
 hilt-compose = "1.2.0" # Updated to a more recent version
 ksp = "2.0.0-1.0.22"
@@ -39,6 +39,7 @@ androidx-material-icons-extended = { group = "androidx.compose.material", name =
 serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
