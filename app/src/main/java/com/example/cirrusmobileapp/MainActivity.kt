@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
         }
 
         // Initialize and connect
-        webSocketService = WebSocketServiceImpl("ws://10.0.2.2:8080/ws/chat")
+        webSocketService = WebSocketServiceImpl("ws://10.0.2.2:8080/ws")
         webSocketService.connect { event ->
             when (event) {
                 is WebSocketEvent.OnOpen -> Log.d("WebSocket", "Connected!")
