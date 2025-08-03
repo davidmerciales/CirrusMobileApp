@@ -35,8 +35,8 @@ import androidx.compose.ui.unit.sp
 fun ProfileDropdown() {
     var isMenuExpanded by remember { mutableStateOf(false) }
 
-    val userName = "John Doe"
-    val userRole = "Manager"
+    val userName = "Ben Tomas"
+    val userRole = "Sales Representative"
 
     Box(
         modifier = Modifier

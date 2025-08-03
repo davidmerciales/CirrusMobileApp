@@ -1,0 +1,154 @@
+package com.example.cirrusmobileapp.presentation.screens.catalog
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
+import com.example.cirrusmobileapp.R
+
+@Composable
+fun ProductCardItem(
+    modifier: Modifier,
+    product: Product
+) {
+    var selectedVariation by remember { mutableStateOf(product.variations.firstOrNull()) }
+
+    Box(
+        modifier = modifier
+    ){
+        Column {
+            Image(
+                painter = painterResource(id = R.drawable.sample_product_1),
+                contentDescription = "App Logo",
+                modifier = Modifier
+                    .background(Color.White)
+                    .weight(.4f)
+                    .fillMaxWidth(),
+                contentScale = ContentScale.Fit
+            )
+            Box(
+                modifier = Modifier
+                    .weight(.6f)
+                    .padding(12.dp)
+                    .fillMaxWidth()
+            ){
+                Column {
+                    Column(Modifier.weight(.9f)) {
+                        Text(
+                            text = product.name,
+                            color = Color.Black,
+                            fontWeight = FontWeight.W500,
+                            fontSize = 14.sp
+                        )
+                        Text(
+                            text = product.type,
+                            modifier = Modifier
+                                .offset(y = -(8).dp),
+                            color = Color.Black.copy(alpha = .4f),
+                            fontWeight = FontWeight.W400,
+                            fontSize = 11.sp
+                        )
+                        Text(
+                            text = product.conversion!!,
+                            color = Color.Black.copy(alpha = .4f),
+                            fontWeight = FontWeight.W400,
+                            fontSize = 11.sp,
+                            lineHeight = 1.2.em
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        LazyRow(
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            items(product.variations) { variation ->
+                                Box(
+                                    modifier = Modifier
+                                        .clickable {
+                                            selectedVariation = variation
+                                        }
+                                        .border(
+                                            width = 1.dp,
+                                            color = if (variation == selectedVariation) Color.LightGray else Color.Transparent,
+                                            shape = RoundedCornerShape(6.dp)
+                                        )
+                                ) {
+                                    Text(
+                                        text = variation,
+                                        modifier = Modifier
+                                            .padding(
+                                                horizontal = 8.dp,
+                                                vertical = 3.dp
+                                            ),
+                                        color = Color.Black,
+                                        fontWeight = FontWeight.W400,
+                                        fontSize = 11.sp
+                                    )
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            text = product.description,
+                            modifier = Modifier,
+                            color = Color.Black,
+                            fontWeight = FontWeight.W400,
+                            fontSize = 11.sp,
+                            lineHeight = 1.2.em
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                    Row(
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Row(Modifier.weight(.6f)) {
+                            Text(
+                                text = "₱${product.pricePerPc.toInt()}",
+                                modifier = Modifier,
+                                color = Color.Black,
+                                fontWeight = FontWeight.W600,
+                                fontSize = 15.sp,
+                            )
+                            Text(
+                                text = "/pc",
+                                modifier = Modifier,
+                                color = Color.Gray,
+                                fontWeight = FontWeight.W400,
+                                fontSize = 11.sp
+                            )
+                        }
+
+                        QuantityCounter()
+                    }
+                }
+            }
+        }
+    }
+
+}
