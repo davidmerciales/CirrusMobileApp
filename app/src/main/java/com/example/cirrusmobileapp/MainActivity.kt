@@ -1,9 +1,6 @@
 package com.example.cirrusmobileapp
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,15 +14,9 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.cirrusmobileapp.data.websocket.WebSocketServiceImpl
-import com.example.cirrusmobileapp.domain.websocket.WebSocketEvent
-import com.example.cirrusmobileapp.domain.websocket.WebSocketService
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,8 +25,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.cirrusmobileapp.presentation.AppViewModel
-import com.example.cirrusmobileapp.presentation.navigation.bottom_navigation.BottomNavigationBar
 import com.example.cirrusmobileapp.presentation.navigation.Destinations
+import com.example.cirrusmobileapp.presentation.navigation.bottom_navigation.BottomNavigationBar
 import com.example.cirrusmobileapp.presentation.navigation.top_bar.AppTopBar
 import com.example.cirrusmobileapp.presentation.screens.calendar.CalendarScreen
 import com.example.cirrusmobileapp.presentation.screens.catalog.CatalogScreen
@@ -47,9 +38,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private lateinit var webSocketService: WebSocketService
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -58,22 +46,6 @@ class MainActivity : ComponentActivity() {
                 MainScreen()
             }
         }
-
-        // Initialize and connect
-        webSocketService = WebSocketServiceImpl("ws://10.0.2.2:8080/ws")
-        webSocketService.connect { event ->
-            when (event) {
-                is WebSocketEvent.OnOpen -> Log.d("WebSocket", "Connected!")
-                is WebSocketEvent.OnMessage -> Log.d("WebSocket", "Received: ${event.message}")
-                is WebSocketEvent.OnFailure -> Log.e("WebSocket", "Error: ${event.throwable}")
-                is WebSocketEvent.OnClosed -> Log.d("WebSocket", "Closed")
-            }
-        }
-
-        // Delay then send a test message
-        Handler(Looper.getMainLooper()).postDelayed({
-            webSocketService.send("Hello from MainActivity")
-        }, 2000)
     }
 }
 

@@ -1,7 +1,8 @@
 package com.example.cirrusmobileapp.domain.websocket
 
-interface WebSocketService {
-    fun connect(listener: (WebSocketEvent) -> Unit)
-    fun send(message: String)
+interface StompService {
+    fun connect(listener: (StompEvent) -> Unit)
+    fun subscribe(topic: String, messageHandler: (String) -> Unit)
+    fun send(destination: String, payload: String)
     fun disconnect()
 }

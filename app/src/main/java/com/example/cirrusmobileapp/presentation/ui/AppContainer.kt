@@ -70,7 +70,7 @@ fun AppContainer(appViewModel: AppViewModel = viewModel(), content: @Composable 
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(key1 = true) {
         appViewModel.notificationEvents.collect { event ->
-            notificationMessage = event.message
+            notificationMessage = event.description
             notificationTitle = event.title
             showNotification = true
             coroutineScope.launch {
@@ -145,29 +145,6 @@ fun AppContainer(appViewModel: AppViewModel = viewModel(), content: @Composable 
                                 lineHeight = 1.2.em
                             )
                         }
-                    }
-                    VerticalDivider(color = Color.LightGray.copy(alpha = .6f))
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .clickable {  },
-                            text = "Close",
-                            color = Color.Black.copy(alpha = .5f),
-                            fontWeight = FontWeight.W400,
-                            fontSize = 12.sp,
-                        )
-                        HorizontalDivider(color = Color.LightGray.copy(alpha = .6f))
-                        Text(
-                            modifier = Modifier
-                                .clickable {  },
-                            text = "Reply",
-                            color = Color.Black.copy(alpha = .5f),
-                            fontWeight = FontWeight.W400,
-                            fontSize = 12.sp,
-                        )
                     }
                 }
 
