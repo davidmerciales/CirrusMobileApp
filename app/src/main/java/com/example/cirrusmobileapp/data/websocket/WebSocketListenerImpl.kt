@@ -6,27 +6,26 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 
 class WebSocketListenerImpl(
-    private val onEvent: (WebSocketEvent) -> Unit
+    private val listener: (WebSocketEvent) -> Unit
 ) : WebSocketListener() {
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
-        onEvent(WebSocketEvent.OnOpen)
+        listener(WebSocketEvent.OnOpen(response))
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
-        onEvent(WebSocketEvent.OnMessage(text))
-    }
-
-    override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        onEvent(WebSocketEvent.OnFailure(t))
+        listener(WebSocketEvent.OnMessage(text))
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-        webSocket.close(1000, null)
-        onEvent(WebSocketEvent.OnClosed)
+        listener(WebSocketEvent.OnClosing(code, reason))
     }
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-        onEvent(WebSocketEvent.OnClosed)
+        listener(WebSocketEvent.OnClosed(code, reason))
+    }
+
+    override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+        listener(WebSocketEvent.OnFailure(t, response))
     }
 }

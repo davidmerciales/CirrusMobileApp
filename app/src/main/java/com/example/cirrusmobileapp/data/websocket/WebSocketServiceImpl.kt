@@ -1,28 +1,56 @@
 package com.example.cirrusmobileapp.data.websocket
 
-import com.example.cirrusmobileapp.domain.websocket.WebSocketEvent
-import com.example.cirrusmobileapp.domain.websocket.WebSocketService
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.WebSocket
+import android.annotation.SuppressLint
+import com.example.cirrusmobileapp.domain.websocket.StompEvent
+import com.example.cirrusmobileapp.domain.websocket.StompService
+import ua.naiksoftware.stomp.Stomp
+import ua.naiksoftware.stomp.StompClient
+import ua.naiksoftware.stomp.dto.LifecycleEvent
 
 class WebSocketServiceImpl(
     private val url: String
-) : WebSocketService {
+) : StompService {
 
-    private var webSocket: WebSocket? = null
+    private var stompClient: StompClient? = null
 
-    override fun connect(listener: (WebSocketEvent) -> Unit) {
-        val request = Request.Builder().url(url).build()
-        val wsListener = WebSocketListenerImpl(listener)
-        webSocket = OkHttpClient().newWebSocket(request, wsListener)
+    @SuppressLint("CheckResult")
+    override fun connect(listener: (StompEvent) -> Unit) {
+        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url)
+        stompClient?.apply {
+            lifecycle().subscribe { lifecycleEvent ->
+                when (lifecycleEvent.type) {
+                    LifecycleEvent.Type.OPENED -> listener(StompEvent.OnOpen)
+                    LifecycleEvent.Type.CLOSED -> listener(StompEvent.OnClosed)
+                    LifecycleEvent.Type.ERROR -> listener(StompEvent.OnFailure(lifecycleEvent.exception ?: Exception("Unknown error")))
+                    else -> {}
+                }
+            }
+
+            connect()
+
+            topic("/topic/all").subscribe { topicMessage ->
+                listener(StompEvent.OnMessage(topicMessage.payload))
+            }
+            topic("/topic/products").subscribe { topicMessage ->
+                listener(StompEvent.OnMessage(topicMessage.payload))
+            }
+        }
     }
 
-    override fun send(message: String) {
-        webSocket?.send(message)
+    @SuppressLint("CheckResult")
+    override fun subscribe(topic: String, messageHandler: (String) -> Unit) {
+        stompClient?.topic(topic)
+            ?.subscribe { topicMessage ->
+                messageHandler(topicMessage.payload)
+            }
+    }
+
+    override fun send(destination: String, payload: String) {
+        stompClient?.send(destination, payload)
+            ?.subscribe()
     }
 
     override fun disconnect() {
-        webSocket?.close(1000, "Client Closed")
+        stompClient?.disconnect()
     }
 }

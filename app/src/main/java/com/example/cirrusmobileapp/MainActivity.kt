@@ -24,7 +24,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.cirrusmobileapp.domain.websocket.WebSocketService
 import com.example.cirrusmobileapp.presentation.AppViewModel
 import com.example.cirrusmobileapp.presentation.navigation.Destinations
 import com.example.cirrusmobileapp.presentation.navigation.bottom_navigation.BottomNavigationBar
@@ -39,9 +38,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private lateinit var webSocketService: WebSocketService
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
