@@ -9,64 +9,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.cirrusmobileapp.presentation.AppViewModel
+import com.example.cirrusmobileapp.presentation.viewmodel.AppViewModel
 import com.example.cirrusmobileapp.presentation.screens.catalog.sections.CustomerDetailsSection
 import com.example.cirrusmobileapp.presentation.screens.catalog.sections.OrderDetailsSection
 import com.example.cirrusmobileapp.presentation.screens.catalog.sections.ProductListSection
+import com.example.cirrusmobileapp.presentation.viewmodel.catalog.CatalogViewModel
 
 @Composable
 fun CatalogScreen(
     navController: NavController,
     appViewModel: AppViewModel
 ) {
-
-    val products = listOf(
-        Product(
-            name = "APO 50 EC",
-            type = "Insecticide",
-            description = "Your thrips specialist, APO 50EC: Outstanding ang Proteksyon at Aksyon laban sa Thrips",
-            pricePerPc = 700.0,
-            sizeVolumes = "1000 ml",
-            variations = listOf("1000ml", "100g")
-        ),
-        Product(
-            name = "Item 2",
-            type = "Type B",
-            description = "Description for Item 2",
-            pricePerPc = 200.0,
-            sizeVolumes = "1 L",
-            variations = listOf("1000ml", "100g")
-        ),
-        Product(
-            name = "Item 3",
-            type = "Type A",
-            description = "Description for Item 3",
-            pricePerPc = 150.0,
-            sizeVolumes = "250 ml",
-            variations = listOf("1000ml", "100g")
-        ),
-        Product(
-            name = "Item 4",
-            type = "Type C",
-            description = "Description for Item 4",
-            pricePerPc = 300.0,
-            sizeVolumes = "2 L",
-            variations = listOf("1000ml", "100g")
-        ),
-        Product(
-            name = "Item 5",
-            type = "Type B",
-            description = "Description for Item 5",
-            pricePerPc = 250.0,
-            sizeVolumes = "750 ml",
-            variations = listOf("1000ml", "100g")
-        ),
-    )
 
     Box(
         modifier = Modifier
@@ -86,7 +47,6 @@ fun CatalogScreen(
                     .padding(top = 26.dp)
                     .weight(.42f)
                     .fillMaxHeight(),
-                products
             )
             OrderDetailsSection(
                 modifier = Modifier

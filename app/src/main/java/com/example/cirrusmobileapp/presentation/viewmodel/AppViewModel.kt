@@ -1,4 +1,4 @@
-package com.example.cirrusmobileapp.presentation
+package com.example.cirrusmobileapp.presentation.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

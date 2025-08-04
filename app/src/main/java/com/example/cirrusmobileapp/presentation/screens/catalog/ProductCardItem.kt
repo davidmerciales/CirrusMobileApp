@@ -32,13 +32,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.cirrusmobileapp.R
+import shimmerable
 
 @Composable
 fun ProductCardItem(
     modifier: Modifier,
-    product: Product
+    product: Product? = null
 ) {
-    var selectedVariation by remember { mutableStateOf(product.variations.firstOrNull()) }
+    var selectedVariation by remember { mutableStateOf(product?.variations?.firstOrNull()) }
 
     Box(
         modifier = modifier
@@ -50,7 +51,8 @@ fun ProductCardItem(
                 modifier = Modifier
                     .background(Color.White)
                     .weight(.4f)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .shimmerable(),
                 contentScale = ContentScale.Fit
             )
             Box(
@@ -58,34 +60,41 @@ fun ProductCardItem(
                     .weight(.6f)
                     .padding(12.dp)
                     .fillMaxWidth()
+                    .shimmerable()
             ){
                 Column {
                     Column(Modifier.weight(.9f)) {
                         Text(
-                            text = product.name,
+                            text = product?.name ?: "",
                             color = Color.Black,
                             fontWeight = FontWeight.W500,
-                            fontSize = 14.sp
-                        )
-                        Text(
-                            text = product.type,
+                            fontSize = 14.sp,
                             modifier = Modifier
-                                .offset(y = -(8).dp),
-                            color = Color.Black.copy(alpha = .4f),
-                            fontWeight = FontWeight.W400,
-                            fontSize = 11.sp
                         )
                         Text(
-                            text = product.conversion!!,
+                            text = product?.type ?:"",
+                            modifier = Modifier
+                                .offset(y = -(8).dp)
+                                .shimmerable(),
                             color = Color.Black.copy(alpha = .4f),
                             fontWeight = FontWeight.W400,
                             fontSize = 11.sp,
-                            lineHeight = 1.2.em
+                        )
+                        Text(
+                            text = product?.conversion ?: "",
+                            color = Color.Black.copy(alpha = .4f),
+                            fontWeight = FontWeight.W400,
+                            fontSize = 11.sp,
+                            lineHeight = 1.2.em,
+                            modifier = Modifier
+                                .shimmerable()
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         LazyRow(
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
+                            if(product?.variations == null)
+                            { return@LazyRow }
                             items(product.variations) { variation ->
                                 Box(
                                     modifier = Modifier
@@ -114,12 +123,13 @@ fun ProductCardItem(
                         }
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = product.description,
-                            modifier = Modifier,
+                            text = product?.description ?: "",
                             color = Color.Black,
                             fontWeight = FontWeight.W400,
                             fontSize = 11.sp,
-                            lineHeight = 1.2.em
+                            lineHeight = 1.2.em,
+                            modifier = Modifier
+                                .shimmerable()
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                     }
@@ -129,15 +139,17 @@ fun ProductCardItem(
                     ) {
                         Row(Modifier.weight(.6f)) {
                             Text(
-                                text = "₱${product.pricePerPc.toInt()}",
-                                modifier = Modifier,
+                                text = "₱${product?.pricePerPc?.toInt()}",
+                                modifier = Modifier
+                                    .shimmerable(),
                                 color = Color.Black,
                                 fontWeight = FontWeight.W600,
                                 fontSize = 15.sp,
                             )
                             Text(
                                 text = "/pc",
-                                modifier = Modifier,
+                                modifier = Modifier
+                                    .shimmerable(),
                                 color = Color.Gray,
                                 fontWeight = FontWeight.W400,
                                 fontSize = 11.sp

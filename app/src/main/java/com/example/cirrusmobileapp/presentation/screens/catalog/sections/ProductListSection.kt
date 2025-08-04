@@ -1,8 +1,16 @@
 package com.example.cirrusmobileapp.presentation.screens.catalog.sections
 
+import ShimmerProvider
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,28 +25,38 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cirrusmobileapp.presentation.common.search_bar.CommonSearchBar
 import com.example.cirrusmobileapp.presentation.screens.catalog.Product
 import com.example.cirrusmobileapp.presentation.screens.catalog.ProductCardItem
+import com.example.cirrusmobileapp.presentation.viewmodel.catalog.CatalogUiState
+import com.example.cirrusmobileapp.presentation.viewmodel.catalog.CatalogViewModel
 
 @Composable
 fun ProductListSection(
-    modifier: Modifier,
-    products: List<Product>
-){
+    modifier: Modifier
+) {
+    val catalogViewModel: CatalogViewModel = hiltViewModel()
+    val uiState by catalogViewModel.uiState.collectAsState()
 
-    Column (
+    Column(
         modifier = modifier
-    ){
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -72,30 +90,62 @@ fun ProductListSection(
                 )
             }
         }
-
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(2.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            items(products){ product->
-                ProductCardItem(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .height(390.dp)
-                        .weight(.5f)
-                        .background(
-                            color = Color(0xFFf8f8f8),
-                            shape = RoundedCornerShape(8.dp)
+            when (uiState) {
+                is CatalogUiState.Idle -> {
+                    items(3) { product ->
+                        ShimmerProvider {
+                            ProductCardItem(
+                                modifier = Modifier
+                                    .padding(4.dp)
+                                    .height(390.dp)
+                                    .weight(.5f)
+                                    .background(
+                                        color = Color(0xFFf8f8f8),
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                                    .border(
+                                        width = .6.dp,
+                                        color = Color.LightGray.copy(alpha = .4f),
+                                        shape = RoundedCornerShape(8.dp)
+                                    ),
+                            )
+                        }
+
+                    }
+                }
+                is CatalogUiState.Success -> {
+                    val products = (uiState as CatalogUiState.Success).products
+                    items(products) { product ->
+                        ProductCardItem(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .height(390.dp)
+                                .weight(.5f)
+                                .background(
+                                    color = Color(0xFFf8f8f8),
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .border(
+                                    width = .6.dp,
+                                    color = Color.LightGray.copy(alpha = .4f),
+                                    shape = RoundedCornerShape(8.dp)
+                                ),
+                            product
                         )
-                        .border(
-                            width = .6.dp,
-                            color = Color.LightGray.copy(alpha = .4f),
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    product)
+                    }
+                }
+                is CatalogUiState.Error -> {
+
+                }
             }
+
         }
+
     }
 }

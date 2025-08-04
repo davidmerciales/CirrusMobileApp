@@ -24,7 +24,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.cirrusmobileapp.presentation.AppViewModel
+import com.example.cirrusmobileapp.presentation.viewmodel.AppViewModel
+import com.example.cirrusmobileapp.presentation.navigation.bottom_navigation.BottomNavigationBar
 import com.example.cirrusmobileapp.presentation.navigation.Destinations
 import com.example.cirrusmobileapp.presentation.navigation.bottom_navigation.BottomNavigationBar
 import com.example.cirrusmobileapp.presentation.navigation.top_bar.AppTopBar
