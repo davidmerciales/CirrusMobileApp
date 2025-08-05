@@ -28,9 +28,9 @@ class WebSocketServiceImpl(
 
             connect()
 
-            topic("/topic/getAll").subscribe { topicMessage ->
-                listener(StompEvent.OnMessage(topicMessage.payload))
-            }
+//            topic("/topic/getAll").subscribe { topicMessage ->
+//                listener(StompEvent.OnMessage(topicMessage.payload))
+//            }
             topic("/topic/products").subscribe { topicMessage ->
                 listener(StompEvent.OnMessage(topicMessage.payload))
             }
