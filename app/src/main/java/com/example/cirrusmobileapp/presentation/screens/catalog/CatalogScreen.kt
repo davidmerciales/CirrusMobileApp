@@ -55,7 +55,7 @@ fun CatalogScreen(
                     .padding(top = 28.dp, start = 18.dp, end = 22.dp, bottom = 10.dp)
                     .border(1.dp, Color.LightGray.copy(alpha = .3f), RoundedCornerShape(8.dp)),
                 onOrderClick = {
-                    appViewModel.showNotification("Order","Order placed successfully!")
+                    appViewModel.showNotification("","Order","Order placed successfully!")
                 }
             )
         }

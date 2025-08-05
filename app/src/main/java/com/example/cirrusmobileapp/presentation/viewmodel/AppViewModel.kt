@@ -9,8 +9,12 @@ import com.example.cirrusmobileapp.domain.websocket.StompEvent
 import com.example.cirrusmobileapp.domain.websocket.StompService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -21,9 +25,11 @@ enum class NotificationType {
 }
 
 data class AppNotification(
+    val id: String,
     val title: String,
     val description: String,
     val type: NotificationType = NotificationType.INFO,
+    val isRead: Boolean = false,
     val timestamp: Long = System.currentTimeMillis()
 )
 
@@ -34,6 +40,9 @@ class AppViewModel @Inject constructor(
 ) : ViewModel() {
     private val _notificationEvents = MutableSharedFlow<AppNotification>()
     val notificationEvents: SharedFlow<AppNotification> = _notificationEvents.asSharedFlow()
+
+    private val _notifications = MutableStateFlow<List<AppNotification>>(emptyList())
+    val notifications: StateFlow<List<AppNotification>> = _notifications.asStateFlow()
 
     init {
         webSocketService.connect { event ->
@@ -54,6 +63,7 @@ class AppViewModel @Inject constructor(
 
 
     fun showNotification(
+        id: String,
         title: String,
         description: String,
         type: NotificationType = NotificationType.INFO
@@ -61,11 +71,36 @@ class AppViewModel @Inject constructor(
         viewModelScope.launch {
             _notificationEvents.emit(
                 AppNotification(
+                    id = id,
                     title = title,
                     description = description,
                     type = type
                 )
             )
+        }
+
+        val newNotification = AppNotification(
+            id = id,
+            title = title,
+            description = description,
+            type = type
+        )
+
+        _notifications.update { currentList ->
+            listOf(newNotification) + currentList
+        }
+    }
+    fun markNotificationAsRead(id: String) {
+        _notifications.update { currentList ->
+            currentList.map {
+                if (it.id == id) it.copy(isRead = true) else it
+            }
+        }
+    }
+
+    fun markAllAsRead() {
+        _notifications.update { currentList ->
+            currentList.map { it.copy(isRead = true) }
         }
     }
 
@@ -95,6 +130,7 @@ class AppViewModel @Inject constructor(
             }
 
             showNotification(
+                id = System.currentTimeMillis().toString(),
                 title = "$entity ${event.replaceFirstChar { it.uppercase() }}",
                 description = description,
                 type = when (event) {

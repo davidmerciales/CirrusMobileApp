@@ -47,17 +47,6 @@ import com.example.cirrusmobileapp.presentation.viewmodel.AppViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/**
- * Main container that wraps the entire application UI and provides a global notification system.
- *
- * This composable observes the AppViewModel's notification events and displays
- * a custom notification with a sliding animation at the top right of the screen.
- * It takes a `content` lambda, which would typically be your `Scaffold` and `NavHost`,
- * allowing any screen to trigger a notification while the global UI remains active.
- *
- * @param appViewModel The ViewModel to observe for notification events.
- * @param content The main content of your application, such as a Scaffold with a NavHost.
- */
 @Composable
 fun AppContainer(appViewModel: AppViewModel = viewModel(), content: @Composable () -> Unit) {
     var showNotification by remember { mutableStateOf(false) }

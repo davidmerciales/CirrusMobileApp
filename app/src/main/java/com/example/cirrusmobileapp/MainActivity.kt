@@ -60,7 +60,7 @@ fun MainScreen() {
     AppContainer {
         Scaffold(
             topBar = {
-                AppTopBar()
+                AppTopBar(appViewModel)
             },
             bottomBar = {
                 BottomNavigationBar(
