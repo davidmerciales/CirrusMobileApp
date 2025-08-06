@@ -166,11 +166,7 @@ fun ProductCardItem(
                             )
                         }
 
-                        QuantityCounter(
-                            onCountChange = {
-
-                            }
-                        )
+                        QuantityCounter()
                     }
                 }
             }

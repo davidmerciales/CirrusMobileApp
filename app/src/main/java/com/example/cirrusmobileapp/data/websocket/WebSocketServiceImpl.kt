@@ -17,23 +17,43 @@ class WebSocketServiceImpl(
     override fun connect(listener: (StompEvent) -> Unit) {
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url)
         stompClient?.apply {
-            lifecycle().subscribe { lifecycleEvent ->
-                when (lifecycleEvent.type) {
-                    LifecycleEvent.Type.OPENED -> listener(StompEvent.OnOpen)
-                    LifecycleEvent.Type.CLOSED -> listener(StompEvent.OnClosed)
-                    LifecycleEvent.Type.ERROR -> listener(StompEvent.OnFailure(lifecycleEvent.exception ?: Exception("Unknown error")))
-                    else -> {}
+
+            lifecycle().subscribe(
+                { lifecycleEvent ->
+                    when (lifecycleEvent.type) {
+                        LifecycleEvent.Type.OPENED -> listener(StompEvent.OnOpen)
+                        LifecycleEvent.Type.CLOSED -> listener(StompEvent.OnClosed)
+                        LifecycleEvent.Type.ERROR -> {
+                            val ex = lifecycleEvent.exception ?: Exception("Unknown error")
+                            listener(StompEvent.OnFailure(ex))
+                        }
+                        else -> {}
+                    }
+                },
+                { error ->
+                    listener(StompEvent.OnFailure(error))
                 }
-            }
+            )
 
             connect()
 
-            topic("/topic/all").subscribe { topicMessage ->
-                listener(StompEvent.OnMessage(topicMessage.payload))
-            }
-            topic("/topic/products").subscribe { topicMessage ->
-                listener(StompEvent.OnMessage(topicMessage.payload))
-            }
+            topic("/topic/all").subscribe(
+                { topicMessage ->
+                    listener(StompEvent.OnMessage(topicMessage.payload))
+                },
+                { error ->
+                    listener(StompEvent.OnFailure(error))
+                }
+            )
+
+            topic("/topic/products").subscribe(
+                { topicMessage ->
+                    listener(StompEvent.OnMessage(topicMessage.payload))
+                },
+                { error ->
+                    listener(StompEvent.OnFailure(error))
+                }
+            )
         }
     }
 
