@@ -1,8 +1,7 @@
 package com.example.cirrusmobileapp.data.local.entities
 
 data class VariantEntity(
-    val variantId: String,
-    val productId: String,
+    val id: String,
     val variantName: String,
     val singleName: String,
     val description: String,
