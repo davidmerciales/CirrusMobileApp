@@ -1,7 +1,8 @@
 package com.example.cirrusmobileapp.presentation.viewmodel.catalog
 
-import com.example.cirrusmobileapp.presentation.viewmodel.UiIntent
+import UiIntent
 
 sealed class CatalogIntent : UiIntent {
     data object LoadProducts : CatalogIntent()
+    data class SearchProducts(val query: String) : CatalogIntent()
 }

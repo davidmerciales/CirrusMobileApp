@@ -3,11 +3,16 @@ package com.example.cirrusmobileapp.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cirrusmobileapp.data.mappers.toProduct
+import com.example.cirrusmobileapp.data.mappers.toProductEntity
+import com.example.cirrusmobileapp.data.mappers.toVariant
 import com.example.cirrusmobileapp.data.model.WebSocketPayload
-import com.example.cirrusmobileapp.domain.model.Product
+import com.example.cirrusmobileapp.domain.model.WebSocketProduct
+import com.example.cirrusmobileapp.domain.repository.ProductRepository
 import com.example.cirrusmobileapp.domain.websocket.StompEvent
 import com.example.cirrusmobileapp.domain.websocket.StompService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -36,7 +41,8 @@ data class AppNotification(
 @HiltViewModel
 class AppViewModel @Inject constructor(
     private val json: Json,
-    private val webSocketService: StompService
+    private val webSocketService: StompService,
+    private val productRepository: ProductRepository
 ) : ViewModel() {
     private val _notificationEvents = MutableSharedFlow<AppNotification>()
     val notificationEvents: SharedFlow<AppNotification> = _notificationEvents.asSharedFlow()
@@ -120,12 +126,19 @@ class AppViewModel @Inject constructor(
             val payload = json.decodeFromString<WebSocketPayload>(trimmed)
             val entity = payload.type.capitalize()
             val event = payload.action.lowercase()
-            val product = json.decodeFromJsonElement<Product>(payload.data)
+            val webSocketProduct = json.decodeFromJsonElement<WebSocketProduct>(payload.data)
+
+            viewModelScope.launch (Dispatchers.IO){
+                productRepository.upsertProductAndVariants(
+                    product = webSocketProduct.toProduct(),
+                    variants = webSocketProduct.variants.map { it.toVariant(productId = webSocketProduct.id) }
+                )
+            }
 
             val description = when (event) {
-                "created" -> "$entity with ID ${product.id} has been created."
-                "updated" -> "$entity with ID ${product.id} has been updated."
-                "deleted" -> "$entity with ID ${product.id} has been deleted."
+                "create" -> "${webSocketProduct.name} has been created."
+                "update" -> "${webSocketProduct.name} has been updated."
+                "delete" -> "${webSocketProduct.name} has been deleted."
                 else -> "$entity event occurred."
             }
 
@@ -134,9 +147,9 @@ class AppViewModel @Inject constructor(
                 title = "$entity ${event.replaceFirstChar { it.uppercase() }}",
                 description = description,
                 type = when (event) {
-                    "created" -> NotificationType.CREATED
-                    "updated" -> NotificationType.UPDATED
-                    "deleted" -> NotificationType.DELETED
+                    "create" -> NotificationType.CREATED
+                    "update" -> NotificationType.UPDATED
+                    "delete" -> NotificationType.DELETED
                     else -> NotificationType.INFO
                 }
             )

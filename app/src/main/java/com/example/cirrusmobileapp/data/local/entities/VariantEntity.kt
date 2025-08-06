@@ -1,7 +1,22 @@
 package com.example.cirrusmobileapp.data.local.entities
 
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
+
+@Entity(
+    tableName = "variants",
+    foreignKeys = [ForeignKey(
+        entity = ProductEntity::class,
+        parentColumns = ["product_id"],
+        childColumns = ["productId"],
+        onDelete = ForeignKey.CASCADE
+    )]
+)
 data class VariantEntity(
-    val id: String,
+    @PrimaryKey
+    val variantId: String,
+    val productId: String,
     val variantName: String,
     val singleName: String,
     val description: String,

@@ -1,18 +1,26 @@
 package com.example.cirrusmobileapp.data.local.datasource
 
 import com.example.cirrusmobileapp.data.local.entities.ProductEntity
+import com.example.cirrusmobileapp.data.local.entities.VariantEntity
+import com.example.cirrusmobileapp.data.local.model.ProductWithVariants
 import kotlinx.coroutines.flow.Flow
 
 interface ProductLocalDataSource {
-    fun getProducts(): Flow<List<ProductEntity>>
+    fun getProductsWithVariants(): Flow<List<ProductWithVariants>>
 
-    suspend fun getProductById(id: Int): ProductEntity?
+    suspend fun getProductWithVariantsById(id: String): ProductWithVariants?
 
-    suspend fun deleteProductById(id: Int)
+    fun searchProductsWithVariants(query: String): Flow<List<ProductWithVariants>>
+
+    suspend fun deleteProductById(id: String)
 
     suspend fun deleteAllProducts()
 
-    fun insertProduct(product: ProductEntity)
+    suspend fun upsertProduct(product: ProductEntity)
 
-    suspend fun insertAllProducts(products: List<ProductEntity>)
+    suspend fun upsertAllProducts(products: List<ProductEntity>)
+
+    suspend fun upsertVariant(variant: VariantEntity)
+
+    suspend fun upsertAllVariants(variants: List<VariantEntity>)
 }

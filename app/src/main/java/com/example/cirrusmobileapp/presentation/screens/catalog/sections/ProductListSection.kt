@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -55,7 +54,13 @@ fun ProductListSection(
                     .weight(.85f)
                     .height(40.dp),
                 placeholder = "Search product",
-                onSearch = {}
+                onSearch = {
+                    catalogViewModel.processIntent(
+                        com.example.cirrusmobileapp.presentation.viewmodel.catalog.CatalogIntent.SearchProducts(
+                            it
+                        )
+                    )
+                }
             )
             Spacer(modifier = Modifier.width(24.dp))
             Row(
@@ -86,7 +91,7 @@ fun ProductListSection(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             when (uiState) {
-                is CatalogUiState.Idle -> {
+                is CatalogUiState.Loading -> {
                     items(3) { product ->
                         ShimmerProvider {
                             ProductCardItem(
@@ -111,7 +116,9 @@ fun ProductListSection(
 
                 is CatalogUiState.Success -> {
                     val products = (uiState as CatalogUiState.Success).products
-                    items(products) { product ->
+                    items(
+                        key = { product -> product.id },
+                        items = products) { product ->
                         ProductCardItem(
                             modifier = Modifier
                                 .padding(4.dp)
@@ -134,6 +141,7 @@ fun ProductListSection(
                 is CatalogUiState.Error -> {
                     print("afsafasfa")
                 }
+                else -> {}
             }
 
         }

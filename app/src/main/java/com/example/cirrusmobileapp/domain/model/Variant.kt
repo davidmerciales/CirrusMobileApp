@@ -1,10 +1,8 @@
 package com.example.cirrusmobileapp.domain.model
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class Variant(
-    val id: String,
+    val variantId: String,
+    val productId: String,
     val variantName: String,
     val singleName: String,
     val description: String,
