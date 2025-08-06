@@ -36,6 +36,14 @@ class ProductLocalDataSourceImpl @Inject constructor(
         productDao.upsertProduct(product)
     }
 
+    override suspend fun insertAllProduct(productList: List<ProductEntity>) {
+        productDao.insertAllProduct(productList)
+    }
+
+    override suspend fun insertAllVariant(variantList: List<VariantEntity>) {
+        productDao.insertAllVariant(variantList)
+    }
+
     override suspend fun upsertAllProducts(products: List<ProductEntity>) {
         productDao.upsertAllProducts(products)
     }

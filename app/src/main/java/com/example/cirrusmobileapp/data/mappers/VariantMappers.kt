@@ -35,10 +35,25 @@ fun WebSocketVariant.toVariant(productId: String): Variant {
     )
 }
 
-fun Variant.toVariantEntity(): VariantEntity {
+fun Variant.toVariantEntity(productId: String): VariantEntity {
     return VariantEntity(
         variantId = this.variantId,
-        productId = this.productId,
+        productId = productId,
+        variantName = this.variantName,
+        singleName = this.singleName,
+        description = this.description,
+        pricePerVariantUnit = this.pricePerVariantUnit,
+        skuPerVariantUnit = this.skuPerVariantUnit,
+        imageUrl = this.imageUrl,
+        stockQuantity = this.stockQuantity,
+        unitOfMeasurement = this.unitOfMeasurement
+    )
+}
+
+fun VariantDto.toVariantEntity(productId: String): VariantEntity {
+    return VariantEntity(
+        variantId = this.variantId,
+        productId = productId,
         variantName = this.variantName,
         singleName = this.singleName,
         description = this.description,

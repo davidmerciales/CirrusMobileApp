@@ -18,6 +18,9 @@ interface ProductLocalDataSource {
 
     suspend fun upsertProduct(product: ProductEntity)
 
+    suspend fun insertAllProduct(productList: List<ProductEntity>)
+    suspend fun insertAllVariant(variantList: List<VariantEntity>)
+
     suspend fun upsertAllProducts(products: List<ProductEntity>)
 
     suspend fun upsertVariant(variant: VariantEntity)
