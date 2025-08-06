@@ -1,13 +1,10 @@
-package com.example.cirrusmobileapp.data.remote.dto
+package com.example.cirrusmobileapp.domain.model
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.SerialName
 
 @Serializable
-data class VariantDto(
-    @SerialName("_id")
-    val variantId: String,
-    val productId: String,
+data class WebSocketVariant(
+    val id: String,
     val variantName: String,
     val singleName: String,
     val description: String,

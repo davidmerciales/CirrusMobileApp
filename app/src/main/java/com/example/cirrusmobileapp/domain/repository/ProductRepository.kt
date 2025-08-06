@@ -1,12 +1,13 @@
 package com.example.cirrusmobileapp.domain.repository
 
-import com.example.cirrusmobileapp.data.local.entities.ProductEntity
-import com.example.cirrusmobileapp.data.remote.base.ApiResult
-import com.example.cirrusmobileapp.data.remote.base.BaseApiResponse
-import com.example.cirrusmobileapp.data.remote.dto.ProductDto
+import com.example.cirrusmobileapp.data.local.model.ProductWithVariants
+import com.example.cirrusmobileapp.domain.model.Product
+import com.example.cirrusmobileapp.domain.model.Variant
 import kotlinx.coroutines.flow.Flow
 
 interface ProductRepository {
-    fun getProducts(): Flow<List<ProductEntity>>
-    suspend fun fetchProducts(lastSyncedDate: String?): ApiResult<BaseApiResponse<List<ProductDto>>>
+    fun getProducts(): Flow<List<ProductWithVariants>>
+    suspend fun refreshProducts(lastSyncedDate: String?)
+    suspend fun upsertProductAndVariants(product: Product, variants: List<Variant>)
+    fun searchProducts(query: String): Flow<List<ProductWithVariants>>
 }

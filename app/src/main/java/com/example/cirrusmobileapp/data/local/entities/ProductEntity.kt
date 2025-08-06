@@ -14,5 +14,4 @@ data class ProductEntity(
     val category: String,
     val brand: String,
     val imageUrl: String,
-    val variantEntities: List<VariantEntity> // This requires a TypeConverter
 )
