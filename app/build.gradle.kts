@@ -22,6 +22,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "BASE_URL", "\"http://10.0.0.94:8001/\"")
     }
 
     buildTypes {
@@ -42,6 +44,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.8.1"
@@ -70,6 +73,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.shimmer)
     implementation(libs.bundles.room)
+    implementation(libs.gson)
+    implementation(libs.bundles.ktor)
     testImplementation(libs.room.testing)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

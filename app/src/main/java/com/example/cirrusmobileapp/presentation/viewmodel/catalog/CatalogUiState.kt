@@ -1,6 +1,6 @@
 package com.example.cirrusmobileapp.presentation.viewmodel.catalog
 
-import com.example.cirrusmobileapp.presentation.screens.catalog.Product
+import com.example.cirrusmobileapp.domain.model.Product
 import com.example.cirrusmobileapp.presentation.viewmodel.UiState
 
 sealed class CatalogUiState : UiState {

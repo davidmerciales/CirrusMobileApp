@@ -21,8 +21,6 @@ import com.example.cirrusmobileapp.presentation.viewmodel.AppViewModel
 import com.example.cirrusmobileapp.presentation.screens.catalog.sections.CustomerDetailsSection
 import com.example.cirrusmobileapp.presentation.screens.catalog.sections.OrderDetailsSection
 import com.example.cirrusmobileapp.presentation.screens.catalog.sections.ProductListSection
-import com.example.cirrusmobileapp.presentation.viewmodel.catalog.CatalogViewModel
-
 @Composable
 fun CatalogScreen(
     navController: NavController,
@@ -61,13 +59,3 @@ fun CatalogScreen(
         }
     }
 }
-
-data class Product(
-    val name: String,
-    val type: String,
-    val conversion: String? = "1 carton = 40 pieces",
-    val variations: List<String>,
-    val description: String,
-    val pricePerPc: Double,
-    val sizeVolumes: String
-)

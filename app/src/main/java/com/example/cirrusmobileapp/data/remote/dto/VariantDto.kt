@@ -1,10 +1,13 @@
-package com.example.cirrusmobileapp.data.model
+package com.example.cirrusmobileapp.data.remote.dto
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 
 @Serializable
-data class Variant(
-    val id: String,
+data class VariantDto(
+    @SerialName("_id")
+    val variantId: String,
+    val productId: String,
     val variantName: String,
     val singleName: String,
     val description: String,

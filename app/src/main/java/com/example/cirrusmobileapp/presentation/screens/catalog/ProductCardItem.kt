@@ -32,6 +32,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.cirrusmobileapp.R
+import com.example.cirrusmobileapp.domain.model.Product
+import com.example.cirrusmobileapp.domain.model.Variant
+import java.text.NumberFormat
+import java.util.Locale
 import shimmerable
 
 @Composable
@@ -39,7 +43,8 @@ fun ProductCardItem(
     modifier: Modifier,
     product: Product? = null
 ) {
-    var selectedVariation by remember { mutableStateOf(product?.variations?.firstOrNull()) }
+    // Correctly initialize state with the full Variant object
+    var selectedVariation by remember { mutableStateOf(product?.variants?.firstOrNull()) }
 
     Box(
         modifier = modifier
@@ -72,7 +77,7 @@ fun ProductCardItem(
                             modifier = Modifier
                         )
                         Text(
-                            text = product?.type ?:"",
+                            text = product?.category ?:"",
                             modifier = Modifier
                                 .offset(y = -(8).dp)
                                 .shimmerable(),
@@ -81,7 +86,7 @@ fun ProductCardItem(
                             fontSize = 11.sp,
                         )
                         Text(
-                            text = product?.conversion ?: "",
+                            text = product?.brand ?: "",
                             color = Color.Black.copy(alpha = .4f),
                             fontWeight = FontWeight.W400,
                             fontSize = 11.sp,
@@ -93,22 +98,24 @@ fun ProductCardItem(
                         LazyRow(
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            if(product?.variations == null)
-                            { return@LazyRow }
-                            items(product.variations) { variation ->
+                            if (product?.variants == null) { return@LazyRow }
+                            items(product.variants) { variation ->
                                 Box(
                                     modifier = Modifier
                                         .clickable {
+                                            // Set the state to the full Variant object
                                             selectedVariation = variation
                                         }
                                         .border(
                                             width = 1.dp,
+                                            // Compare the full Variant objects
                                             color = if (variation == selectedVariation) Color.LightGray else Color.Transparent,
                                             shape = RoundedCornerShape(6.dp)
                                         )
                                 ) {
                                     Text(
-                                        text = variation,
+                                        // Display the variant name property
+                                        text = variation.variantName,
                                         modifier = Modifier
                                             .padding(
                                                 horizontal = 8.dp,
@@ -136,10 +143,13 @@ fun ProductCardItem(
                     Row(
                         verticalAlignment = Alignment.Bottom,
                         horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Row(Modifier.weight(.6f)) {
+                            val price = selectedVariation?.pricePerVariantUnit ?: 0.0
+                            val currencyFormatter = remember { NumberFormat.getCurrencyInstance(Locale("en", "PH")) }
                             Text(
-                                text = "₱${product?.pricePerPc?.toInt()}",
+                                text = currencyFormatter.format(price),
                                 modifier = Modifier
                                     .shimmerable(),
                                 color = Color.Black,
@@ -156,7 +166,11 @@ fun ProductCardItem(
                             )
                         }
 
-                        QuantityCounter()
+                        QuantityCounter(
+                            onCountChange = {
+
+                            }
+                        )
                     }
                 }
             }
