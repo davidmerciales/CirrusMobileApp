@@ -6,8 +6,7 @@ import com.example.cirrusmobileapp.domain.model.Variant as DomainVariant
 
 fun VariantEntity.toDomainVariant(): DomainVariant {
     return DomainVariant(
-        variantId = this.variantId,
-        productId = this.productId,
+        id = this.id,
         variantName = this.variantName,
         singleName = this.singleName,
         description = this.description,
@@ -21,8 +20,7 @@ fun VariantEntity.toDomainVariant(): DomainVariant {
 
 fun VariantDto.toLocalVariant(): VariantEntity {
     return VariantEntity(
-        variantId = this.variantId,
-        productId = this.productId,
+        id = this.id,
         variantName = this.variantName,
         singleName = this.singleName,
         description = this.description,
@@ -37,8 +35,7 @@ fun VariantDto.toLocalVariant(): VariantEntity {
 
 fun VariantDto.toVariant(): DomainVariant {
     return DomainVariant(
-        variantId = this.variantId,
-        productId = this.productId,
+        id = this.id,
         variantName = this.variantName,
         singleName = this.singleName,
         description = this.description,

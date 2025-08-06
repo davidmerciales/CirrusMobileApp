@@ -5,9 +5,8 @@ import kotlinx.serialization.SerialName
 
 @Serializable
 data class VariantDto(
-    @SerialName("_id")
-    val variantId: String,
-    val productId: String,
+    @SerialName("id")
+    val id: String,
     val variantName: String,
     val singleName: String,
     val description: String,

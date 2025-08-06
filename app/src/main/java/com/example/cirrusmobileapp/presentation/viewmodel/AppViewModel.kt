@@ -3,8 +3,8 @@ package com.example.cirrusmobileapp.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cirrusmobileapp.data.local.entities.ProductEntity
 import com.example.cirrusmobileapp.data.model.WebSocketPayload
+import com.example.cirrusmobileapp.domain.model.Product
 import com.example.cirrusmobileapp.domain.websocket.StompEvent
 import com.example.cirrusmobileapp.domain.websocket.StompService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -120,7 +120,7 @@ class AppViewModel @Inject constructor(
             val payload = json.decodeFromString<WebSocketPayload>(trimmed)
             val entity = payload.type.capitalize()
             val event = payload.action.lowercase()
-            val product = json.decodeFromJsonElement<ProductEntity>(payload.data)
+            val product = json.decodeFromJsonElement<Product>(payload.data)
 
             val description = when (event) {
                 "created" -> "$entity with ID ${product.id} has been created."
