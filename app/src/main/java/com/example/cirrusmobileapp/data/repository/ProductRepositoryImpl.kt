@@ -4,15 +4,12 @@ import android.util.Log
 import com.example.cirrusmobileapp.common.ext.toIsoDateTime
 import com.example.cirrusmobileapp.data.local.datasource.ProductLocalDataSource
 import com.example.cirrusmobileapp.data.local.datasource.shared_pref_datastore.PreferencesManager
-import com.example.cirrusmobileapp.data.local.entities.VariantEntity
 import com.example.cirrusmobileapp.data.local.model.ProductWithVariants
-import com.example.cirrusmobileapp.data.mappers.toLocalEntity
 import com.example.cirrusmobileapp.data.mappers.toProductEntity
 import com.example.cirrusmobileapp.data.mappers.toProductEntityList
 import com.example.cirrusmobileapp.data.mappers.toVariantEntity
 import com.example.cirrusmobileapp.data.remote.base.ApiResult
 import com.example.cirrusmobileapp.data.remote.datasource.ProductRemoteDataSource
-import com.example.cirrusmobileapp.data.remote.dto.VariantDto
 import com.example.cirrusmobileapp.domain.model.Product
 import com.example.cirrusmobileapp.domain.model.Variant
 import com.example.cirrusmobileapp.domain.repository.ProductRepository
