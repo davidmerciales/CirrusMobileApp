@@ -15,6 +15,7 @@ object SyncContract {
     data class State(
         val isSyncing: Boolean = false,
         val progress: Int = 0,
+        val syncingMessage: String = "Syncing latest changes...",
         val error: String? = null,
         val successMessage: String? = null
     ) : UiState

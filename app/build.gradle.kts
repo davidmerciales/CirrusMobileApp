@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.bundles.room)
     implementation(libs.gson)
     implementation(libs.bundles.ktor)
+    implementation(libs.lottie)
     testImplementation(libs.room.testing)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

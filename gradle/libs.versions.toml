@@ -20,6 +20,7 @@ room = "2.7.2"
 gson = "2.10.1"
 ktor = "3.2.2"
 coil = "2.6.0"
+lottie = "4.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -55,6 +56,7 @@ ktor-client-serialization = { group = "io.ktor", name = "ktor-client-content-neg
 ktor-client-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "ktor" }
+lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 
 [bundles]
 room = ["room-runtime", "room-ktx"]
