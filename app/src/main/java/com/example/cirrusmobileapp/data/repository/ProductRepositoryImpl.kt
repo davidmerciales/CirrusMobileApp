@@ -44,15 +44,11 @@ class ProductRepositoryImpl @Inject constructor(
                 val productsDto = remoteResponse.data.data
                 Log.d("Sync_date", "✅ Successfully fetched ${productsDto?.size ?: 0} products")
 
-
                 productsDto?.let { productsDtoList ->
-                    productLocalDataSource.insertAllProduct(productsDtoList.toProductEntityList())
-
                     val allVariantEntities = productsDtoList.flatMap { productDto ->
                         productDto.variants.map { it.toVariantEntity(productDto.id) }
                     }
-
-                    productLocalDataSource.insertAllVariant(allVariantEntities)
+                    productLocalDataSource.insertAllProductAllVariant(productsDtoList.toProductEntityList(), allVariantEntities)
                 }
 
                 val lastSyncedDate = System.currentTimeMillis().toIsoDateTime()

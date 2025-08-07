@@ -1,5 +1,7 @@
 package com.example.cirrusmobileapp.data.local.datasource
 
+import android.util.Log
+import com.example.cirrusmobileapp.common.ext.chunkedInsert
 import com.example.cirrusmobileapp.data.local.dao.ProductDao
 import com.example.cirrusmobileapp.data.local.entities.ProductEntity
 import com.example.cirrusmobileapp.data.local.entities.VariantEntity
@@ -42,6 +44,27 @@ class ProductLocalDataSourceImpl @Inject constructor(
 
     override suspend fun insertAllVariant(variantList: List<VariantEntity>) {
         productDao.insertAllVariant(variantList)
+    }
+
+    override suspend fun insertAllProductAllVariant(
+        productList: List<ProductEntity>,
+        variantList: List<VariantEntity>
+    ) {
+        try {
+            if (productList.size > 100 || variantList.size > 100) {
+                productList.chunkedInsert { chunk ->
+                    productDao.insertAllProduct(chunk)
+                }
+                variantList.chunkedInsert { chunk ->
+                    productDao.insertAllVariant(chunk)
+                }
+            } else {
+                productDao.insertProductWithVariants(productList, variantList)
+            }
+        } catch (e: Exception) {
+            Log.e("LocalDataSource", "Insert failed: ${e.localizedMessage}")
+            throw e
+        }
     }
 
     override suspend fun upsertAllProducts(products: List<ProductEntity>) {
