@@ -27,12 +27,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cirrusmobileapp.presentation.viewmodel.AppViewModel
 import com.example.cirrusmobileapp.presentation.navigation.bottom_navigation.BottomNavigationBar
 import com.example.cirrusmobileapp.presentation.navigation.Destinations
-import com.example.cirrusmobileapp.presentation.navigation.bottom_navigation.BottomNavigationBar
 import com.example.cirrusmobileapp.presentation.navigation.top_bar.AppTopBar
 import com.example.cirrusmobileapp.presentation.screens.calendar.CalendarScreen
 import com.example.cirrusmobileapp.presentation.screens.catalog.CatalogScreen
 import com.example.cirrusmobileapp.presentation.screens.customer.CustomerScreen
 import com.example.cirrusmobileapp.presentation.screens.home.HomeScreen
+import com.example.cirrusmobileapp.presentation.screens.signIn.LoginScreen
 import com.example.cirrusmobileapp.presentation.ui.AppContainer
 import com.example.cirrusmobileapp.ui.theme.CirrusMobileAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,45 +53,56 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    val currentBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = currentBackStackEntry?.destination
-    val appViewModel: AppViewModel = hiltViewModel()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val showScaffold = currentRoute != Destinations.LoginScreen.route
 
     AppContainer {
         Scaffold(
             topBar = {
-                AppTopBar(appViewModel)
+                if (showScaffold) {
+                    val appViewModel: AppViewModel = hiltViewModel()
+                    AppTopBar(appViewModel)
+                }
             },
             bottomBar = {
-                BottomNavigationBar(
-                    navController = navController,
-                    currentDestination = currentDestination
-                )
+                if (showScaffold) {
+                    BottomNavigationBar(
+                        navController = navController,
+                        currentDestination = navBackStackEntry?.destination
+                    )
+                }
             },
             floatingActionButton = {
-                FloatingActionButton(
-                    modifier = Modifier
-                        .size(70.dp)
-                        .offset(y = (48).dp),
-                    containerColor = Color.Black,
-                    shape = RoundedCornerShape(50),
-                    onClick = {
-                        navController.navigate(Destinations.Catalog.route)
+                if (showScaffold) {
+                    FloatingActionButton(
+                        modifier = Modifier
+                            .size(70.dp)
+                            .offset(y = (48).dp),
+                        containerColor = Color.Black,
+                        shape = RoundedCornerShape(50),
+                        onClick = {
+                            navController.navigate(Destinations.Catalog.route)
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(35.dp),
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Add")
                     }
-                ) {
-                    Icon(
-                        modifier = Modifier.size(35.dp),
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Add")
                 }
             },
             floatingActionButtonPosition = FabPosition.Center
         ) { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = Destinations.HomeScreen.route,
+                startDestination = Destinations.LoginScreen.route,
                 modifier = Modifier.padding(innerPadding)
             ) {
+                composable(Destinations.LoginScreen.route) {
+                    LoginScreen(navController)
+                }
                 composable(Destinations.HomeScreen.route) {
                     HomeScreen(navController)
                 }
@@ -99,6 +110,7 @@ fun MainScreen() {
                     CustomerScreen(navController)
                 }
                 composable(Destinations.Catalog.route) {
+                    val appViewModel: AppViewModel = hiltViewModel()
                     CatalogScreen(navController, appViewModel)
                 }
                 composable(Destinations.Calendar.route) {

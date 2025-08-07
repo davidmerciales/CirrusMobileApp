@@ -37,39 +37,38 @@ class ProductRepositoryImpl @Inject constructor(
 
         Log.d("Sync_date", "📦 Effective sync date: $effectiveSyncDate")
 
-        val remoteResponse = productRemoteDataSource.fetchProducts(effectiveSyncDate)
+            val remoteResponse = productRemoteDataSource.fetchProducts(effectiveSyncDate)
+            when (remoteResponse) {
+                is ApiResult.Success -> {
+                    val productsDto = remoteResponse.data.data
+                    Log.d("Sync_date", "✅ Successfully fetched ${productsDto?.size ?: 0} products")
 
-        when (remoteResponse) {
-            is ApiResult.Success -> {
-                val productsDto = remoteResponse.data.data
-                Log.d("Sync_date", "✅ Successfully fetched ${productsDto?.size ?: 0} products")
 
+                    productsDto?.let { productsDtoList ->
+                        productLocalDataSource.insertAllProduct(productsDtoList.toProductEntityList())
 
-                productsDto?.let { productsDtoList ->
-                    productLocalDataSource.insertAllProduct(productsDtoList.toProductEntityList())
+                        val allVariantEntities = productsDtoList.flatMap { productDto ->
+                            productDto.variants.map { it.toVariantEntity(productDto.id) }
+                        }
 
-                    val allVariantEntities = productsDtoList.flatMap { productDto ->
-                        productDto.variants.map { it.toVariantEntity(productDto.id) }
+                        productLocalDataSource.insertAllVariant(allVariantEntities)
                     }
 
-                    productLocalDataSource.insertAllVariant(allVariantEntities)
+                    val lastSyncedDate = System.currentTimeMillis().toIsoDateTime()
+                    prefDataStore.saveString("last_synced_date", lastSyncedDate)
+                    Log.d("Sync_date", "🕒 Saved last synced date: $lastSyncedDate")
                 }
 
-                val lastSyncedDate = System.currentTimeMillis().toIsoDateTime()
-                prefDataStore.saveString("last_synced_date", lastSyncedDate)
-                Log.d("Sync_date", "🕒 Saved last synced date: $lastSyncedDate")
-            }
+                is ApiResult.Error -> {
+                    Log.e("Sync_date", "❌ Error while fetching products: ${remoteResponse.message}")
+                    throw Exception(remoteResponse.message)
+                }
 
-            is ApiResult.Error -> {
-                Log.e("Sync_date", "❌ Error while fetching products: ${remoteResponse.message}")
-                throw Exception(remoteResponse.message)
+                is ApiResult.NetworkError -> {
+                    Log.e("Sync_date", "🌐 Network error during product fetch", remoteResponse.throwable)
+                    throw remoteResponse.throwable
+                }
             }
-
-            is ApiResult.NetworkError -> {
-                Log.e("Sync_date", "🌐 Network error during product fetch", remoteResponse.throwable)
-                throw remoteResponse.throwable
-            }
-        }
     }
 
     override fun searchProducts(query: String): Flow<List<ProductWithVariants>> {
