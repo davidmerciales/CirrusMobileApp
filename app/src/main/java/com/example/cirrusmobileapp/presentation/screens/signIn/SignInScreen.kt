@@ -67,8 +67,8 @@ fun LoginScreen(
     LaunchedEffect(signInViewModel) {
         signInViewModel.effect.collect { effect ->
             when (effect) {
-                is SignInContract.Effect.NavigateToHome -> {
-                    navController.navigate(Destinations.HomeScreen.route)
+                is SignInContract.Effect.NavigateToSync -> {
+                    navController.navigate(Destinations.SyncScreen.route)
                 }
                 is SignInContract.Effect.ShowError -> {
 

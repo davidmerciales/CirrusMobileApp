@@ -3,6 +3,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class Destinations(val route: String) {
+
+    @Serializable
+    data object SyncScreen : Destinations("sync")
+
     @Serializable
     data object LoginScreen : Destinations("login")
 

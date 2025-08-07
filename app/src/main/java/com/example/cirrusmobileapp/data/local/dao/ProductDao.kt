@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
+import com.example.cirrusmobileapp.common.ext.chunkedInsert
 import com.example.cirrusmobileapp.data.local.entities.ProductEntity
 import com.example.cirrusmobileapp.data.local.entities.VariantEntity
 import com.example.cirrusmobileapp.data.local.model.ProductWithVariants
@@ -40,6 +41,12 @@ interface ProductDao {
 
     @Insert(onConflict = REPLACE)
     suspend fun insertAllVariant(variantList: List<VariantEntity>)
+
+    @Transaction
+    suspend fun insertProductWithVariants(productEntityList: List<ProductEntity>, variantEntityList: List<VariantEntity>) {
+        insertAllProduct(productEntityList)
+        insertAllVariant(variantEntityList)
+    }
 
     @Upsert
     suspend fun upsertAllProducts(products: List<ProductEntity>)

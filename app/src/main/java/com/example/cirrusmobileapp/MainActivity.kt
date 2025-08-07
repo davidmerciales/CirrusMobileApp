@@ -33,6 +33,7 @@ import com.example.cirrusmobileapp.presentation.screens.catalog.CatalogScreen
 import com.example.cirrusmobileapp.presentation.screens.customer.CustomerScreen
 import com.example.cirrusmobileapp.presentation.screens.home.HomeScreen
 import com.example.cirrusmobileapp.presentation.screens.signIn.LoginScreen
+import com.example.cirrusmobileapp.presentation.screens.sync.SyncScreen
 import com.example.cirrusmobileapp.presentation.ui.AppContainer
 import com.example.cirrusmobileapp.ui.theme.CirrusMobileAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -102,6 +103,9 @@ fun MainScreen() {
             ) {
                 composable(Destinations.LoginScreen.route) {
                     LoginScreen(navController)
+                }
+                composable(Destinations.SyncScreen.route) {
+                    SyncScreen(navController)
                 }
                 composable(Destinations.HomeScreen.route) {
                     HomeScreen(navController)
