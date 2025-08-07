@@ -1,6 +1,8 @@
 package com.example.cirrusmobileapp.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
@@ -32,6 +34,12 @@ interface ProductDao {
 
     @Upsert
     suspend fun upsertProduct(product: ProductEntity)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun insertAllProduct(productList: List<ProductEntity>)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun insertAllVariant(variantList: List<VariantEntity>)
 
     @Upsert
     suspend fun upsertAllProducts(products: List<ProductEntity>)

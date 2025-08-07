@@ -71,8 +71,7 @@ class CatalogViewModel @Inject constructor(
 
     fun refreshProducts() {
         safeLaunch {
-            val lastSyncedDate = "2025-08-06T15:09:55"
-            productRepository.refreshProducts(lastSyncedDate = lastSyncedDate)
+            productRepository.refreshProducts()
         }
     }
 }

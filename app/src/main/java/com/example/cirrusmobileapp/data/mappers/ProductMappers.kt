@@ -19,6 +19,10 @@ fun ProductDto.toProductEntity(): ProductEntity {
     )
 }
 
+fun List<ProductDto>.toProductEntityList(): List<ProductEntity> {
+    return this.map { it.toProductEntity() }
+}
+
 fun WebSocketProduct.toProduct(): Product {
     return Product(
         id = this.id,
