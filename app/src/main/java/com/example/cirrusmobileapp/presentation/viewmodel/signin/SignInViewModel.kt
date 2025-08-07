@@ -54,7 +54,7 @@ class SignInViewModel @Inject constructor(
 
             if (currentState.email == "admin" && currentState.password == "admin"){
                 setState { copy(isLoading = false) }
-                setEffect(SignInContract.Effect.NavigateToHome)
+                setEffect(SignInContract.Effect.NavigateToSync)
             } else {
                 setState { copy(isLoading = false) }
                 setEffect(SignInContract.Effect.ShowError("Invalid email or password"))

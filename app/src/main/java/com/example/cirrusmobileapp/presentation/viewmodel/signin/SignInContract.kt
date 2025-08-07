@@ -20,7 +20,7 @@ object SignInContract {
     ) : UiState
 
     sealed class Effect : UiEffect {
-        data object NavigateToHome : Effect()
+        data object NavigateToSync : Effect()
         data class ShowError(val message: String) : Effect()
         data object ShowLoginSuccess : Effect()
     }
