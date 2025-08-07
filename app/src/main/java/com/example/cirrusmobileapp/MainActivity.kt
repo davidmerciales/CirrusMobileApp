@@ -57,7 +57,7 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val showScaffold = currentRoute != Destinations.LoginScreen.route
+    val showScaffold = currentRoute != Destinations.LoginScreen.route && currentRoute !=  Destinations.SyncScreen.route
 
     AppContainer {
         Scaffold(
@@ -76,7 +76,7 @@ fun MainScreen() {
                 }
             },
             floatingActionButton = {
-                if (showScaffold) {
+                if (showScaffold && currentRoute != Destinations.Catalog.route) {
                     FloatingActionButton(
                         modifier = Modifier
                             .size(70.dp)

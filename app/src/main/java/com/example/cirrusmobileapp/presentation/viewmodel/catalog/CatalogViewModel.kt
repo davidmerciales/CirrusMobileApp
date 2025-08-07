@@ -30,7 +30,7 @@ class CatalogViewModel @Inject constructor(
     override fun handleIntent(intent: CatalogContract.Intent) {
         when (intent) {
             CatalogContract.Intent.LoadProducts -> {
-                refreshProducts()
+               // refreshProducts()
             }
             is CatalogContract.Intent.SearchProducts -> {
                 updateSearchQuery(intent.query)
@@ -68,18 +68,18 @@ class CatalogViewModel @Inject constructor(
         setState { copy(isLoading = true, error = null) }
     }
 
-    private fun refreshProducts() {
-        safeLaunch(
-            onError = { throwable ->
-                setState { copy(isLoading = false, isRefreshing = false) }
-                setEffect(CatalogContract.Effect.ShowError(throwable.message ?: "An unknown error occurred."))
-            }
-        ) {
-            setState { copy(isRefreshing = true) }
-            productRepository.refreshProducts()
-            setState { copy(isRefreshing = false) }
-        }
-    }
+//    private fun refreshProducts() {
+//        safeLaunch(
+//            onError = { throwable ->
+//                setState { copy(isLoading = false, isRefreshing = false) }
+//                setEffect(CatalogContract.Effect.ShowError(throwable.message ?: "An unknown error occurred."))
+//            }
+//        ) {
+//            setState { copy(isRefreshing = true) }
+//            productRepository.refreshProducts()
+//            setState { copy(isRefreshing = false) }
+//        }
+//    }
 
     override fun Throwable.toErrorEffect(): CatalogContract.Effect {
         return CatalogContract.Effect.ShowError(message ?: "An unexpected error occurred")
