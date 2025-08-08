@@ -11,7 +11,7 @@ import javax.inject.Singleton
 class ProductRemoteDataSourceImpl @Inject constructor(
     private val productApiService: ProductApiService
 ): ProductRemoteDataSource  {
-    override suspend fun fetchProducts(lastSyncDate: String?): ApiResult<BaseApiResponse<List<ProductDto>>> {
-        return productApiService.fetchProducts(lastSyncDate)
+    override suspend fun fetchProducts(lastSyncDate: String?, page: Int?, size: Int?,): ApiResult<BaseApiResponse<List<ProductDto>>> {
+        return productApiService.fetchProducts(lastSyncDate, page, size)
     }
 }

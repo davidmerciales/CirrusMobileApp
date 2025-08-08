@@ -6,5 +6,12 @@ import kotlinx.serialization.Serializable
 data class BaseApiResponse<T>(
     val status: Int,
     val data: T?,
-    val message: String?
+    val message: String?,
+    val meta: MetaData? = null
+)
+
+@Serializable
+data class MetaData(
+    val totalCount: Int = 0,
+    val hasMore: Boolean? = null
 )

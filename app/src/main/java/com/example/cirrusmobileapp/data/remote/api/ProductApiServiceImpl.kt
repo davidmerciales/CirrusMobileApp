@@ -17,7 +17,7 @@ class ProductApiServiceImpl @Inject constructor(
     client: HttpClient,
     baseUrl: String
 ): BaseApi(client, baseUrl), ProductApiService {
-    override suspend fun fetchProducts(lastSyncedDate: String?): ApiResult<BaseApiResponse<List<ProductDto>>> {
+    override suspend fun fetchProducts(lastSyncedDate: String?, page : Int?, size : Int?): ApiResult<BaseApiResponse<List<ProductDto>>> {
         return safeApiCall {
             client.get{
                 url{
@@ -26,6 +26,8 @@ class ProductApiServiceImpl @Inject constructor(
                 }
                 if (lastSyncedDate != null) {
                     parameter("lastSyncedDate", lastSyncedDate)
+                    parameter("limit", size)
+                    parameter("offset", page)
                 }
             }.body()
         }

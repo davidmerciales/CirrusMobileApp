@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -21,12 +22,14 @@ import com.example.cirrusmobileapp.presentation.viewmodel.AppViewModel
 import com.example.cirrusmobileapp.presentation.screens.catalog.sections.CustomerDetailsSection
 import com.example.cirrusmobileapp.presentation.screens.catalog.sections.OrderDetailsSection
 import com.example.cirrusmobileapp.presentation.screens.catalog.sections.ProductListSection
+import com.example.cirrusmobileapp.presentation.viewmodel.catalog.CatalogContract
+import com.example.cirrusmobileapp.presentation.viewmodel.catalog.CatalogViewModel
+
 @Composable
 fun CatalogScreen(
     navController: NavController,
     appViewModel: AppViewModel
 ) {
-
     Box(
         modifier = Modifier
             .background(Color.White)
